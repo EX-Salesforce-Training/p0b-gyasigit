@@ -1,0 +1,416 @@
+/////////////////////////////////////////////////////////////////
+// Name: Project 0 Bravo
+// Author: Gyasi Gittens (gdg009@bucknell.edu)
+// Date: 02/25/2020
+// Description: Series of apex methods to demonstrate
+// basic understanding of coding concepts.
+// 
+// /////////////////////////////////////////////////////////////////
+// 
+// 
+public class P0B {
+    
+    public static Integer nFibonacci( Integer n ){
+        if( n == 0 ){
+            return 0;
+        } 
+        if( n == 1 ){
+            return 1;
+        }
+        else {
+            return (nFibonacci(n-1)+ nFibonacci(n-2)); 
+        }
+        
+}
+   
+    public static Integer[] sortArray( Integer[] intList ) {
+        List<Integer> my_list = new List<Integer>();
+        List<Integer> temp_list = new List<Integer>();
+        my_list = intList.clone();
+        Boolean istrue = true;
+        Integer numtrack = 0; // This number will be used to track if the list has been switched
+        
+        /* This code runs a for loop while the value of the Boolean is true is true. The forloop 
+         * iterates over the passed in intlist. If the indexed value directly to the right of 
+         * the current index is greater then the current index it switches the two.
+         * It then increment to the next value. If it is not greater it leaves the list the same.
+         * There is also a temporary (number tracking value) that increments if we ever switch  a number 
+         * during one of out passes.  
+         * 
+         */
+        while(istrue){
+            numtrack = 0;
+            for(Integer i = 0; (i<intList.size()-1);){
+                if(intList[i]<= intList[i+1]){
+                    i++;
+                }
+                
+                else if(intList[i] > intList[i+1]){
+                    my_list[i]= intList[i+1];
+                    my_list[i+1] = intList[i];
+                    intList = my_list.clone();
+                    i++;
+                    numtrack++;  
+                    system.debug(intList);
+                }
+                if(numtrack == 0){
+                    istrue = false;
+                }
+                else{
+                    istrue = true;
+                    
+                }
+                
+                
+            }
+        }
+        system.debug(intList);
+        return intList;
+    }
+
+   
+    public static Integer nFactorial( Integer n) {
+        if ( n == 0){
+            return 1;
+        }
+        else {
+           return n * nFactorial(n-1); 
+        }
+        
+}
+    
+   public static Integer[] rotateLeftNTimes( Integer[] Myarray, Integer n) {
+
+       Integer length = Myarray.size();
+       List<Integer> my_list = new  Integer[length];
+       system.debug(my_list);
+       while(n>Myarray.size()){
+           n = n-Myarray.size();
+           system.debug(n);
+       }
+       for(Integer i = 0; i < Myarray.size(); i++ ){
+           if(i - n < 0 ){
+               Integer a = my_list.size() - (n - i);
+               my_list[a] = Myarray[i];
+               system.debug(my_list);
+           }
+           else{
+               my_list[i-n] = Myarray[i];
+               system.debug(my_list);
+           }
+       }
+       system.debug(my_list);
+        return(my_list);
+}
+
+
+    public static Boolean bracketsAreBalanced( String s ) {
+        /*
+         * This disgusting monstrosity is difficult to explain in a standard format so Im explaining 
+         *  it as I go along. However my program operates under the assumption that all balanced brackets 
+         *  will be mirrors of each other. 
+         * 
+         * My general technique was to compare the two ends of a the string and whether they were opposites of one 
+         * another. If they were opposites I would remove them send them into Oblivion.TM. 
+         * For any other relationship the function will recognize that and break and return false
+         * 
+         * I also choose asthetically not to return false if the delimited('deletedwhitespace)
+         * length of the string was an odd number. IE- An odd length string can not return a balanced bracket. 
+        */
+
+		Integer temp = 0; // A poorly name temp value that will store the last value in the string
+        Integer temp2 = 0; // An equally poorly named temp value that stores the first value
+        
+        Boolean truecheck = true; // An antiquated value that allowed me to test results once upon a time
+      
+        s = s.deleteWhitespace(); // Deleted the white spaces in our string as this could mess with various results 
+        Integer stringlen = s.length();// An inital integer that declares the length of our whitespaceless string
+        
+        /* The getchars method returns a list of strings that are make our list very easily iterable
+         * Using it ensured that I did not run the risk of going outside the string index length as would often happen
+         * when using the string.length method which would often to me in my early stages. 
+         * 
+         * 
+		*/
+        for(Integer ch : s.getChars()){
+            stringlen = s.length();
+            if(stringlen != 0){ // If the string is of a lenghth of zero go straight to the end 
+ 		
+               temp = s.charAt(stringlen-1); // Making sure to reset the temp value to end string in ASCII
+               temp2 = s.charAt(0); // Ensuring temp2 value is at the beginning of the string in ASCII
+                // ASCII value are comparable as opposed to strings
+                
+            	/* The following if statements ensure that there is an opposite bracket to match 
+            	 * any given bracket encountered first. I.E. '(' and ')' are bracket pairs. If they match 
+* apex methods are used to obliviate them. It checks 6 possible pairs. 
+            	 * 
+            	 * */
+                if(temp2 == 40){
+                    if(temp == 41){
+                        s = s.removeStartIgnoreCase('(');
+                        s = s.removeEndIgnoreCase(')');
+                        system.debug(s);
+      					continue; // The continue takes resets the loop instead of allowing the program to 
+                        // if statements
+                            }
+                    }
+                
+                if(temp2 == 123){
+                    if(temp == 125){
+                        s = s.removeStartIgnoreCase('{');
+                        s = s.removeEndIgnoreCase('}');
+                        continue;// The continue breaks resets the loop...
+                    }
+                }
+                    
+                 if (temp2 == 91){
+                    if(temp == 93){
+                        s = s.removeStartIgnoreCase('[');
+                         s = s.removeEndIgnoreCase(']');
+                        continue; // The continue breaks resets the loop...
+                    }
+                }
+                 if (temp2 == 41){
+                    if(temp == 40){
+                        s = s.removeStartIgnoreCase(')');
+                         s = s.removeEndIgnoreCase('(');
+                        continue; // The continue breaks resets the loop...
+                    }
+                 }
+                 if (temp2 == 93){
+                    if(temp == 91){
+                        s = s.removeStartIgnoreCase(']');
+                         s = s.removeEndIgnoreCase('[');
+                        continue; // The continue breaks resets the loop...
+                    }
+                 }
+                  if (temp2 == 125){
+                    if(temp == 123){
+                        s = s.removeStartIgnoreCase('}');
+                        s = s.removeEndIgnoreCase('{');
+                        continue; // The continue breaks resets the loop...
+                    }
+                      
+                  }
+                }
+            if( s.length()== 0){
+                break;
+            }
+                else {
+                    truecheck = false; 
+                    return false; // The continue breaks resets the loop...
+                }
+     			stringlen = s.length();
+            
+            } 
+      
+            
+        system.debug('If you got here youre it means that you were able to iterate through the entire list');
+        return true;       
+	
+        
+    }
+    
+    public static void updateAccountSize( ) {
+        SavePoint mysave = Database.setSavePoint();
+ 		List<Account> allaccounts = [SELECT NumberOfEmployees,Size__c FROM Account];
+        //system.debug(allaccounts.size());
+        for(integer i = 0; i < allaccounts.size(); i++){
+            //system.debug(allaccounts[i]);
+            //system.debug(allaccounts[i].NumberofEmployees);
+            if(allaccounts[i].NumberofEmployees <= 1000){
+                allaccounts[i].Size__c = 'small';
+            }
+             else if(allaccounts[i].NumberofEmployees <= 10000){
+                allaccounts[i].Size__c = 'medium';
+            }
+             else if(allaccounts[i].NumberofEmployees > 10000){
+                allaccounts[i].Size__c = 'large';
+            }
+           	system.debug(allaccounts[i] + ' ' + allaccounts[i].Size__c);
+        }
+        
+        update allaccounts;
+        //system.debug('Here is a list of the accounts ' + allaccounts);
+        //system.debug('Did I even manage to get here');
+     	//Database.rollback(mysave);
+}
+    
+    public static void updateCALeads() {
+        SavePoint mysave2 = Database.setSavePoint();
+        List <Lead> accountwithLeads = [SELECT Address ,Status, Description 
+                                        FROM Lead];
+        
+        for(Integer i = 0; i < accountwithLeads.size(); i++){
+           String accountInState = accountwithLeads[i].Address.getState(); // Creates a string with the state address 
+            if (accountwithLeads[i].Status != 'Closed - Not Converted'){
+            	if(accountInState == 'CA'|| accountInState == 'ca'){
+            		accountwithLeads[i].Description = 'We are no longer doing business in California.' ;
+            	}
+                
+            }
+            else if( accountwithLeads[i].Status == 'Closed - Not Converted'){
+                if(accountInState == 'CA' || accountInState == 'ca'){
+                    accountwithLeads[i].Description = 'We are no longer doing business in California.';
+            }
+        }
+        
+        update accountwithLeads; 
+        /* In class testing of class working. 
+        for (integer i = 0; i < accountwithLeads.size(); i++ ){
+            
+		system.debug('Address testState is' + accountwithLeads[i].Address.getState()); 
+        system.debug('Address testDescription is' + accountwithLeads[i].Description); 
+   		system.debug('Address testStatus is' + accountwithLeads[i].Status);
+            }
+		*/ 
+        //Database.rollback(mysave2); 
+            
+}
+    }
+    
+    public static void closePastDueOpportunities( ) { 
+        SavePoint mysave3 = Database.setSavePoint();
+        Date todaysdate = system.today();
+        List <Opportunity> closedopps = [SELECT CloseDate, StageName 
+                                         FROM Opportunity 
+                                         WHERE CloseDate <:todaysdate];
+       
+        
+        for(Opportunity a : closedopps ){
+            if(a.StageName != 'Closed Won'){
+                a.StageName = 'Closed Lost';
+            } 
+            
+        }
+        update closedopps ; 
+        /* In class method to test the output of the test method before the save is called
+        for (integer i = 0; i < closedopps.size(); i++ ){
+        system.debug(closedopps[i].StageName);
+        }
+		*/
+        Database.rollback(mysave3);
+    }
+        
+    
+    
+}   
+
+
+
+
+
+
+//String a = '';
+//while(truecheck){
+//system.debug(a);
+ // }
+ // //system.debug('I did it in the forloop');
+// for(integer i = s.length(); i>=1; i--){
+//if (truecheck== true){
+       //  system.debug('Here you go its true');
+         //   return true;
+        //}   
+        
+ /*
+                   else{
+                       system.debug('Checking what is inside of s'+ s);
+                        system.debug('This was a false statement');
+                        return false;
+                      }
+               */
+//}
+    /*
+        for(Integer i =0; i <= s.length()-1; i++){
+            system.debug(s.CharAt(i));
+            
+            
+            Integer len = s.length()-1 ;
+            temp2 = s.charAt(len);
+            system.debug(temp2);
+            Boolean istrue = true; 
+            //while(istrue = true ){
+            if(temp == temp2){
+             system.debug('you got here');  
+            }
+            else{
+               system.debug('This is false');
+            //}   
+            }
+        }
+        return true;
+    }
+            system.debug(truecheck);
+            return true;
+            
+            }
+        if(truecheck){
+            return true;
+        }
+        else{
+            return false;
+        }
+    
+}
+    
+            
+            //chars.add(temp);
+            //while(chars.size()>=1){
+            //system.debug(chars.size());
+            //
+            //  
+            /*if(chars[0] == chars[chars.size()-1]){
+              system.debug(chars);
+              chars.remove(0);
+              chars.remove(chars.size()-1);
+              system.debug(chars);
+            }   
+            else{
+                system.debug('This is false');
+                return false;
+                
+            }
+            */
+       // }
+        /*
+         * List<Integer> chars = new List<Integer>();
+        system.debug(chars[0]);
+        system.debug(chars[1]);
+        system.debug(chars[2]);
+        system.debug(chars[3]);
+        system.debug(chars);
+        */
+    
+/*            
+        }
+        //List<String> new_list = s.split();
+       // return true ;
+}
+
+    */
+    //
+    /*
+    public static void updateCALeads( ) {
+}
+    public static void closePastDueOpportunities( ) {
+}
+*/
+//}
+
+/*  
+        temp_list = intList.clone();
+        Integer n = 1;
+        for(Integer a : intList ) {
+            for(Integer i = 0; temp_list[0] != null; i++)
+            if(n == a){
+                my_list.add(n);
+                temp_list.remove(n);
+                n = i;
+            }
+            else{
+                n++;
+            }
+        
+        }
+        return my_list;
+*/
